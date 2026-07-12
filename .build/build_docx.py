@@ -20,7 +20,7 @@ def set_paragraph_rtl(paragraph, rtl=True):
     bidi.set(qn('w:val'), '1' if rtl else '0')
 
 
-def set_run_language(run, language, rtl=False):
+def set_run_language(run, language, rtl=False, font_size=None):
     r_pr = run._r.get_or_add_rPr()
     fonts = r_pr.rFonts
     if fonts is None:
@@ -41,6 +41,8 @@ def set_run_language(run, language, rtl=False):
             rtl_node = OxmlElement('w:rtl')
             r_pr.append(rtl_node)
         rtl_node.set(qn('w:val'), '1')
+    if font_size is not None:
+        run.font.size = Pt(font_size)
 
 
 def configure_document(document):
@@ -88,25 +90,50 @@ def add_body_paragraph(document, text, rtl):
     paragraph.paragraph_format.line_spacing = 1.15
     paragraph.paragraph_format.space_after = Pt(4)
     run = paragraph.add_run(text)
-    run.font.size = Pt(11)
-    set_run_language(run, 'he-IL' if rtl else 'ru-RU', rtl)
+    set_run_language(run, 'he-IL' if rtl else 'ru-RU', rtl, 11)
 
 
 def add_play_paragraph(document, text, rtl):
     paragraph = document.add_paragraph()
     paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT if rtl else WD_ALIGN_PARAGRAPH.LEFT
     set_paragraph_rtl(paragraph, rtl)
+    paragraph.paragraph_format.line_spacing = 1.0
+    paragraph.paragraph_format.space_after = Pt(0)
+    paragraph.paragraph_format.widow_control = False
+    language = 'he-IL' if rtl else 'ru-RU'
 
-    if ':' in text:
+    scene_titles = {
+        'דמויות', 'תמונה ראשונה — המפגש', 'תמונה שנייה — השאלה', 'תמונה שלישית — הבחירה',
+        'ДЕЙСТВУЮЩИЕ ЛИЦА', 'СЦЕНА ПЕРВАЯ — ВСТРЕЧА', 'СЦЕНА ВТОРАЯ — ВОПРОС', 'СЦЕНА ТРЕТЬЯ — ВЫБОР'
+    }
+    if text in scene_titles:
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        paragraph.paragraph_format.space_before = Pt(4)
+        paragraph.paragraph_format.space_after = Pt(2)
+        run = paragraph.add_run(text)
+        run.bold = True
+        set_run_language(run, language, rtl, 11)
+    elif (text.startswith('(') and text.endswith(')')) or text in {'סוף.', 'КОНЕЦ.'}:
+        run = paragraph.add_run(text)
+        run.italic = True
+        set_run_language(run, language, rtl, 10.5)
+    elif ' — ' in text and ':' not in text:
+        name, description = text.split(' — ', 1)
+        name_run = paragraph.add_run(name + ' — ')
+        name_run.bold = True
+        set_run_language(name_run, language, rtl, 10.5)
+        description_run = paragraph.add_run(description)
+        set_run_language(description_run, language, rtl, 10.5)
+    elif ':' in text:
         speaker, speech = text.split(':', 1)
         speaker_run = paragraph.add_run(speaker + ':')
         speaker_run.bold = True
-        set_run_language(speaker_run, 'he-IL' if rtl else 'ru-RU', rtl)
+        set_run_language(speaker_run, language, rtl, 10.5)
         speech_run = paragraph.add_run(speech)
-        set_run_language(speech_run, 'he-IL' if rtl else 'ru-RU', rtl)
+        set_run_language(speech_run, language, rtl, 10.5)
     else:
         run = paragraph.add_run(text)
-        set_run_language(run, 'he-IL' if rtl else 'ru-RU', rtl)
+        set_run_language(run, language, rtl, 10.5)
 
 
 def build_document(data_path, output_path, rtl):
@@ -127,14 +154,12 @@ def build_document(data_path, output_path, rtl):
     for text in data['historical_intro_paragraphs']:
         add_body_paragraph(document, text, rtl)
 
-    if data['play_paragraphs']:
-        add_heading(document, data['play_title'], 2, rtl)
-        for text in data['play_paragraphs']:
-            add_play_paragraph(document, text, rtl)
+    add_heading(document, data['play_title'], 2, rtl)
+    for text in data['play_paragraphs']:
+        add_play_paragraph(document, text, rtl)
 
-    properties = document.core_properties
-    properties.title = data['document_title']
-    properties.author = 'Arseny Perel'
+    document.core_properties.title = data['document_title']
+    document.core_properties.author = 'Arseny Perel'
     document.save(output_path)
     print(output_path)
 
