@@ -1,0 +1,65 @@
+{
+  "title": "ביבליוגרפיה",
+  "sections": [
+    {
+      "title": "מקורות עתיקים ומהדורות",
+      "items": [
+        {
+          "text": "רפפורט, אוריאל; שוורץ, דניאל ר׳. ספר מקבים א׳: מבוא, תרגום ופירוש. ירושלים: יד יצחק בן־צבי, תשס״ד (2004).",
+          "rtl": true,
+          "lang": "he-IL"
+        },
+        {
+          "text": "Josephus, Flavius. The Jewish War. Trans. H. St. J. Thackeray. Loeb Classical Library. Cambridge, MA: Harvard University Press, 1927-1928.",
+          "rtl": false,
+          "lang": "en-US"
+        },
+        {
+          "text": "García Martínez, Florentino; Tigchelaar, Eibert J. C. The Dead Sea Scrolls Study Edition. 2 vols. Leiden/Grand Rapids: Brill/Eerdmans, 1997-1998.",
+          "rtl": false,
+          "lang": "en-US"
+        },
+        {
+          "text": "הברית החדשה, מעשי השליחים, פרקים א׳-ט״ו.",
+          "rtl": true,
+          "lang": "he-IL"
+        }
+      ]
+    },
+    {
+      "title": "מחקרים מודרניים",
+      "items": [
+        {
+          "text": "Cohen, Shaye J. D. From the Maccabees to the Mishnah. 3rd ed. Louisville: Westminster John Knox Press, 2014.",
+          "rtl": false,
+          "lang": "en-US"
+        },
+        {
+          "text": "Sanders, E. P. Judaism: Practice and Belief, 63 BCE-66 CE. London/Philadelphia: SCM Press/Trinity Press International, 1992.",
+          "rtl": false,
+          "lang": "en-US"
+        },
+        {
+          "text": "Goodman, Martin. Rome and Jerusalem: The Clash of Ancient Civilizations. New York: Alfred A. Knopf, 2007.",
+          "rtl": false,
+          "lang": "en-US"
+        },
+        {
+          "text": "רפפורט, אוריאל. בית חשמונאי: עם ישראל בארץ ישראל בימי החשמונאים. ירושלים: יד יצחק בן־צבי, תשע״ג (2013).",
+          "rtl": true,
+          "lang": "he-IL"
+        },
+        {
+          "text": "Grabbe, Lester L. A History of the Jews and Judaism in the Second Temple Period, Vol. 3: The Maccabean Revolt, Hasmonaean Rule, and Herod the Great (174-4 BCE). London: T&T Clark, 2020.",
+          "rtl": false,
+          "lang": "en-US"
+        },
+        {
+          "text": "Mason, Steve. A History of the Jewish War, A.D. 66-74. Cambridge: Cambridge University Press, 2016.",
+          "rtl": false,
+          "lang": "en-US"
+        }
+      ]
+    }
+  ]
+}
