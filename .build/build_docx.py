@@ -136,8 +136,21 @@ def add_play_paragraph(document, text, rtl):
         set_run_language(run, language, rtl, 10.5)
 
 
-def build_document(data_path, output_path, rtl):
+def load_data(data_path, rtl):
     data = json.loads(data_path.read_text(encoding='utf-8'))
+    if not rtl:
+        intro_path = ROOT / 'content_ru_intro.json'
+        play_path = ROOT / 'content_ru_play.json'
+        if intro_path.exists():
+            data['historical_intro_paragraphs'] = json.loads(intro_path.read_text(encoding='utf-8'))
+        if play_path.exists():
+            data['play_paragraphs'] = json.loads(play_path.read_text(encoding='utf-8'))
+            data['play_title'] = 'Пьеса: Пять дорог к одному Храму'
+    return data
+
+
+def build_document(data_path, output_path, rtl):
+    data = load_data(data_path, rtl)
     document = Document()
     configure_document(document)
 
