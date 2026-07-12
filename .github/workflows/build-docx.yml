@@ -1,4 +1,4 @@
-name: Build KVS DOCX
+name: Build KVS DOCX files
 
 on:
   push:
@@ -26,17 +26,17 @@ jobs:
       - name: Install document builder
         run: python -m pip install --upgrade python-docx
 
-      - name: Build DOCX
+      - name: Build DOCX files
         run: python .build/build_docx.py
 
-      - name: Commit generated document
+      - name: Commit generated documents
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add KVS_Final_Project.docx
+          git add KVS_Hebrew.docx KVS_Russian.docx
           if git diff --cached --quiet; then
             echo "No document changes"
           else
-            git commit -m "Build updated KVS DOCX"
+            git commit -m "Build updated KVS documents"
             git push
           fi
