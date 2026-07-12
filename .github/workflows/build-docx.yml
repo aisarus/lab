@@ -1,0 +1,42 @@
+name: Build KVS DOCX
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.build/**'
+      - '.github/workflows/build-docx.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install document builder
+        run: python -m pip install --upgrade python-docx
+
+      - name: Build DOCX
+        run: python .build/build_docx.py
+
+      - name: Commit generated document
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add KVS_Final_Project.docx
+          if git diff --cached --quiet; then
+            echo "No document changes"
+          else
+            git commit -m "Build updated KVS DOCX"
+            git push
+          fi
